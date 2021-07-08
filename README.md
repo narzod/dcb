@@ -13,17 +13,22 @@ USAGE:
     dcb [options] <command> [<arguments...>]
 
 OPTIONS:
-    -o, --outfile <FILENAME>     filename to output
-    -c1 <HEX COLOR CODE>
-    -c2 <HEX COLOR CODE>
-    -c3 <HEX COLOR CODE>
-    -c3 <HEX COLOR CODE>         specify border color for images which have border width > 0. Border width set with -bw.
-    -ct <theme-name>             specify a color pallette
-    -t <WxH>                     tile dimensions in pixels
-    -m <WxH>                     matrix dimensions in tiles. Tiles are not necessarily squares.
-    -n int                       number of frames for animated images
-    -d int                       duration per frame for animated images
-    -f <FILE FORMAT>             specify SVG or GIF format
+    -v, --version
+    -h, --help
+    -o, --outfile <FILENAME>     output filename
+    -ct, --theme                 specify a thee-color pallette by name
+    -bw, --borderwidth           border witdh for tile
+    -c1, --color1 <COLOR NAME>   color override for first color in pallette
+    -c2, --color2 <COLOR NAME>   color override for second color in pallette
+    -c3, --color3 <COLOR NAME>, --bordercolor
+                                 color override for third color in pallette which specifies border color.
+                                 Used only for images which have border width > 0. Border width set with -bw.
+    -i, --invert                 swap first two colors in pallette
+    -t, --tileWxH <WxH>          tile dimensions in pixels
+    -m, --matrixWxH <WxH>        matrix dimensions in tiles. Tiles are not necessarily squares.
+    -nf, --frames int            number of frames used for animated images
+    -d, --duration int           duration per frame for animated images
+    -f, --format <FILE FORMAT>   specify SVG or GIF format
 
 ```
 See: http://jonasjacek.github.io/colors/
