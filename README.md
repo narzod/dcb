@@ -33,5 +33,11 @@ OPTIONS:
 
 ```
 See: http://jonasjacek.github.io/colors/
+
+## Examples
+
+```
+dcb -t 32x16 -m 20x10 -bw 1 -fc red -bc green -o test1.gif
+```
   
   
