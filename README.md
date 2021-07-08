@@ -4,7 +4,7 @@ dcb is a program to create simple images of checkboard patterns from the command
 
 # Usage
 
-## Command-line options (not implemenented yet)
+## Command-line options
 
 ```
 dcb - draw checkboard patterns from the command line
@@ -30,6 +30,7 @@ OPTIONS:
     -d, --duration               duration per frame for animated images
     -f, --format <FILE FORMAT>   specify SVG or GIF format
     -s, --imagesize              image width and height in pixels. Overrides tilesize option.
+    -fx, --specialfx             add N interior border
 
 ```
 See: http://jonasjacek.github.io/colors/
