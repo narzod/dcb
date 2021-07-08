@@ -24,11 +24,12 @@ OPTIONS:
                                  color override for third color in pallette which specifies border color.
                                  Used only for images which have border width > 0. Border width set with -bw.
     -i, --invert                 swap first two colors in pallette
-    -t, --tileWxH <WxH>          tile dimensions in pixels
-    -m, --matrixWxH <WxH>        matrix dimensions in tiles. Tiles are not necessarily squares.
-    -nf, --frames int            number of frames used for animated images
-    -d, --duration int           duration per frame for animated images
+    -ts, --tilesize              tile width and height in pixels
+    -ms, --matrixsize            matrix width and height in tiles. Tiles are not necessarily squares.
+    -n, --frames                 number of frames used for animated images
+    -d, --duration               duration per frame for animated images
     -f, --format <FILE FORMAT>   specify SVG or GIF format
+    -s, --imagesize              image width and height in pixels. Overrides tilesize option.
 
 ```
 See: http://jonasjacek.github.io/colors/
