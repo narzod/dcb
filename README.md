@@ -38,7 +38,12 @@ See: http://jonasjacek.github.io/colors/
 ## Examples
 
 ```
-dcb -t 32x16 -m 20x10 -bw 1 -fc red -bc green -o test1.gif
+dcb -t 32x16 -m 20x10 -bw 1 -fc red -bc green -o test1.gif -i
 ```
-  
+
+```
+dcb -t 10x20 -m 8x8 -fc DarkRed -bc SteelBlue -o test2.gif -i colorparings.txt
+
+
+```
   
