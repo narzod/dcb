@@ -15,22 +15,18 @@ USAGE:
 OPTIONS:
     -v, --version
     -h, --help
-    -o, --outfile <FILENAME>     output filename
-    -ct, --theme                 specify a thee-color pallette by name
-    -bw, --borderwidth           border witdh for tile
-    -c1, --color1 <COLOR NAME>   color override for first color in pallette
-    -c2, --color2 <COLOR NAME>   color override for second color in pallette
-    -c3, --color3 <COLOR NAME>, --bordercolor
-                                 color override for third color in pallette which specifies border color.
-                                 Used only for images which have border width > 0. Border width set with -bw.
-    -i, --invert                 swap first two colors in pallette
-    -ts, --tilesize              tile width and height in pixels
-    -ms, --matrixsize            matrix width and height in tiles. Tiles are not necessarily squares.
-    -n, --frames                 number of frames used for animated images
-    -d, --duration               duration per frame for animated images
-    -f, --format <FILE FORMAT>   specify SVG or GIF format
-    -s, --imagesize              image width and height in pixels. Overrides tilesize option.
-    -fx, --specialfx             add N interior border
+    -o, --outfile                output filename                                        -- default out.gif
+    -fc, --fgcolor               tile foreground color (first tile color)               -- default white
+    -bc, --bgcolor               tile background color (border color)                   -- default black
+    -bw, --borderwidth           [border width in pixels] x [border fx multiplier]      -- default 1x1
+    -i, --invert                 swap colors specied in -fc and -bc
+    -t, --tilesize               tile width x height in pixels                          -- default 80x80
+    -m, --matrixsize             matrix width x height in tiles                         -- default 8x8
+    -n, --frames                 number of frames to include                            -- default 1
+    -d, --duration               frame duration for animated images in ms               -- default 100                           
+    -f, --format                 specify SVG or GIF format                              -- default GIF
+    -s, --imagesize              image width x height in pixels (overrides -t)
+    -fx, --borderfx              none, gradient, or alt
 
 ```
 See: http://jonasjacek.github.io/colors/
