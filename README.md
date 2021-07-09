@@ -1,6 +1,6 @@
 # dcb - draw checkerboard
 
-dcb is a program to create simple images of checkboard patterns from the command line.
+`dcb` is a program to create simple images of checkboard patterns from the command line.
 
 # Usage
 
