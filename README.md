@@ -16,8 +16,8 @@ OPTIONS:
     -v   --version           print version info
     -h   --help              print this help
     -o   --outfile           output filename (default out.gif)
-    -fc  --fgcolor           tile foreground color (first tile color)
-    -bc  --bgcolor           tile background color (border color)
+    -c1  --fgcolor           first color or light tile on chess board
+    -c2  --bgcolor           second color or dark tile on chess board
     -bw  --borderwidth       border_width_in_pixels x border_fx_multiplier (AxB)
     -i   --invert            swap colors specied in -fc and -bc
     -t   --tilesize          tile_width x height_in_pixels (AxB)
