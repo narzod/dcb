@@ -13,23 +13,23 @@ USAGE:
     dcb [options] <command> [<arguments...>]
 
 OPTIONS:
-    -v, --version
-    -h, --help
-    -o, --outfile                output filename                                        -- default out.gif
-    -fc, --fgcolor               tile foreground color (first tile color)               -- default white
-    -bc, --bgcolor               tile background color (border color)                   -- default black
-    -bw, --borderwidth           [border width in pixels] x [border fx multiplier]      -- default 1x1
-    -i, --invert                 swap colors specied in -fc and -bc
-    -t, --tilesize               tile width x height in pixels                          -- default 80x80
-    -m, --matrixsize             matrix width x height in tiles                         -- default 8x8
-    -n, --frames                 number of frames to include                            -- default 1
-    -d, --duration               frame duration for animated images in ms               -- default 100                           
-    -f, --format                 specify SVG or GIF format                              -- default GIF
-    -s, --imagesize              image width x height in pixels (overrides -t)
-    -fx, --borderfx              0=none, 1=gradient, 2=alternating
+    -v   --version           print version info
+    -h   --help              print this help
+    -o   --outfile           output filename (default out.gif)
+    -fc  --fgcolor           tile foreground color (first tile color)
+    -bc  --bgcolor           tile background color (border color)
+    -bw  --borderwidth       border_width_in_pixels x border_fx_multiplier (AxB)
+    -i   --invert            swap colors specied in -fc and -bc
+    -t   --tilesize          tile_width x height_in_pixels (AxB)
+    -m   --matrixsize        matrix_width x height_in_tiles (AxB)
+    -n   --frames            number of frames to include
+    -d   --duration          frame duration for animated images in ms
+    -f   --format            specify SVG, PNG or GIF format
+    -s   --imagesize         image width x height in pixels (overrides -t) (AxB)
+    -fx  --borderfx          0=none, 1=alternating, 2=gradient
 
 ```
-See: http://jonasjacek.github.io/colors/
+See color info: http://jonasjacek.github.io/colors/ and https://www.astrouw.edu.pl/~jskowron/colors-x11/rgb.html
 
 ## Examples
 
@@ -51,9 +51,9 @@ dcb -t 600x420 -m 1x1 -fc Black -bc Yellow
 ## Sample input file for sequence of paired colors
 
 ```
-SteelBlue  SeaFoam
-DarkRed    Yellow
-HotPink    White
+"Steel Blue"  "Papaya Whip"
+"Dark Red"    "Antique White"
+"HotPink"     Black
 ```
 
 ```
