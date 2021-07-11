@@ -1,10 +1,16 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"image"
 	"image/color"
+	"image/draw"
+	"image/jpeg"
 	"image/png"
+	"io/ioutil"
+	"log"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -22,6 +28,7 @@ var (
 	Color1   = "Cornsilk"
 	Color2   = "Tomato"
 	fileName = os.Args[6]
+	Pattern  = os.Args[7]
 )
 
 var TileWidth, TileHeight = parseAxB(os.Args[3])
@@ -80,6 +87,21 @@ func drawTileOutline(x, y, w, h, bw int, col color.Color) {
 	}
 }
 
+func drawSpecialOutline(x, y, w, h int, pat string, col color.Color) {
+	//bw := 5
+
+	r := []rune(pat)
+	for i, c := range r {
+		//for i := 0; i <= bw-1; i++ {
+		if c == '1' {
+			drawRect(x+i, y+i, x+w-1-i, y+h-1-i, col)
+			//fmt.Println(x+i, y+i, x+w-1-i, y+h-1-i, col)
+
+		}
+		//}
+	}
+}
+
 // also see alt algorithm https://en.wikipedia.org/wiki/Checkerboard#Mathematical_description
 func isLightSquare(x, y int) bool {
 	if (x%2 == 0) && (y%2 == 0) {
@@ -115,21 +137,60 @@ func main() {
 
 	TileWidth, TileHeight = parseAxB(os.Args[4])
 
+	// get jpeg from url and convert to png
+	// ... and use PNG in tiles
+	url := "https://picsum.photos/" + fmt.Sprintf("%d", TileWidth) + "/" + fmt.Sprintf("%d", TileHeight)
+
+	fmt.Println("getting", url)
+
+	//url := "https://picsum.photos/80/80/?random"
+
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	image1, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// url := "https://i.picsum.photos/id/803/80/80.jpg?hmac=Z3s1SvDRg1QX9bC3auW_NL9rQakS6zZqlZoSIyJD0cU"
+	// imageBytes := GetJpg(url)
+	// fmt.Println(http.DetectContentType(imageBytes))
+	tileimg, err := jpeg.Decode(bytes.NewReader(image1))
+	if err != nil {
+		panic("unable to decode jpeg")
+	}
+
+	//pngdata, _ := ToPng(fromweb)
+
 	for col := 0; col <= MatrixHeight-1; col++ {
 		for row := 0; row <= MatrixWidth-1; row++ {
 			if isLightSquare(row, col) {
 				CurColor = FgColor
 				AltColor = BgColor
+				//draw.Draw(img, tileimg.Bounds(), tileimg, image.Pt(0, 0), draw.Src)
+				//drawTile(XOffset+(row*TileWidth), YOffset+(col*TileHeight), TileWidth, TileHeight, CurColor)
+
+				topLtPoint := image.Pt(XOffset+(row*TileWidth), YOffset+(col*TileHeight))
+				botRtPoint := image.Pt(XOffset+(row*TileWidth)+TileWidth, YOffset+(col*TileHeight)+TileHeight)
+				tileRect := image.Rectangle{topLtPoint, botRtPoint}
+
+				draw.Draw(img, tileRect, tileimg, image.Pt(0, 0), draw.Src)
+
 			} else {
 				CurColor = BgColor
 				AltColor = FgColor
+				drawTile(XOffset+(row*TileWidth), YOffset+(col*TileHeight), TileWidth, TileHeight, CurColor)
 			}
-			drawTile(XOffset+(row*TileWidth), YOffset+(col*TileHeight), TileWidth, TileHeight, CurColor)
-			drawTileOutline(XOffset+(row*TileWidth), YOffset+(col*TileHeight), TileWidth, TileHeight, 5, AltColor)
+			//drawTileOutline(XOffset+(row*TileWidth), YOffset+(col*TileHeight), TileWidth, TileHeight, BorderWidth, AltColor)
+			drawSpecialOutline(XOffset+(row*TileWidth), YOffset+(col*TileHeight), TileWidth, TileHeight, Pattern, AltColor)
 			// DrawTileOutline(XOffset+(row*TileWidth)+2, YOffset+(col*TileHeight)+2, TileWidth-4, TileHeight-4, AltColor)
 			// DrawTileOutline(XOffset+(row*TileWidth)+4, YOffset+(col*TileHeight)+4, TileWidth-8, TileHeight-8, AltColor)
-			fmt.Println(BorderMultipler)
-			drawTileOutline(XOffset+(row*TileWidth)+10, YOffset+(col*TileHeight)+10, TileWidth-20, TileHeight-20, BorderWidth, AltColor)
+			//fmt.Println(BorderMultipler)
+			//drawTileOutline(XOffset+(row*TileWidth)+10, YOffset+(col*TileHeight)+10, TileWidth-20, TileHeight-20, BorderWidth, AltColor)
 
 		}
 	}
