@@ -181,7 +181,7 @@ func main() {
 				draw.Draw(img, tileRect, tileimg, image.Pt(0, 0), draw.Src)
 
 			} else {
-				CurColor = BgColor
+				CurColor = x11colors.RandomSeeded().RGBA
 				AltColor = FgColor
 				drawTile(XOffset+(row*TileWidth), YOffset+(col*TileHeight), TileWidth, TileHeight, CurColor)
 			}
