@@ -119,6 +119,15 @@ func getRGBAByX11Name(name string) color.RGBA {
 	return xc.RGBA
 }
 
+func readPlaceHolders(filename string) []string {
+	fileBytes, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	return strings.Split(string(fileBytes), "\n")
+}
+
 func getTilePhoto(url string) image.Image {
 	fmt.Println("getting", url)
 	resp, err := http.Get(url)
@@ -162,10 +171,17 @@ func main() {
 	MatrixWidth, MatrixHeight = parseAxB(os.Args[3])
 	TileWidth, TileHeight = parseAxB(os.Args[4])
 
+	// get slice of urls from file
+	placeHoldersConf := "placeholders.txt"
+	urls := readPlaceHolders(placeHoldersConf)
+	holderPick1, _ := strconv.Atoi(os.Args[8])
+	//holderPick2, _ := strconv.Atoi(os.Args[9])
+	url := urls[holderPick1]
+	url = strings.Replace(url, "640", fmt.Sprintf("%d", TileWidth), 1)
+	url = strings.Replace(url, "360", fmt.Sprintf("%d", TileHeight), 1)
 	// get jpeg from url and decode
-	url2 := "http://www.fillmurray.com/" + fmt.Sprintf("%d", TileWidth) + "/" + fmt.Sprintf("%d", TileHeight)
 	//url := "https://picsum.photos/" + fmt.Sprintf("%d", TileWidth) + "/" + fmt.Sprintf("%d", TileHeight)
-	tileimg := getTilePhoto(url2)
+	tileimg := getTilePhoto(url)
 
 	for col := 0; col <= MatrixHeight-1; col++ {
 		for row := 0; row <= MatrixWidth-1; row++ {
@@ -177,12 +193,12 @@ func main() {
 				topLtPoint := image.Pt(XOffset+(row*TileWidth), YOffset+(col*TileHeight))
 				botRtPoint := image.Pt(XOffset+(row*TileWidth)+TileWidth, YOffset+(col*TileHeight)+TileHeight)
 				tileRect := image.Rectangle{topLtPoint, botRtPoint}
-
 				draw.Draw(img, tileRect, tileimg, image.Pt(0, 0), draw.Src)
 
 			} else {
 				CurColor = BgColor
 				AltColor = FgColor
+
 				drawTile(XOffset+(row*TileWidth), YOffset+(col*TileHeight), TileWidth, TileHeight, CurColor)
 			}
 			//drawTileOutline(XOffset+(row*TileWidth), YOffset+(col*TileHeight), TileWidth, TileHeight, BorderWidth, AltColor)

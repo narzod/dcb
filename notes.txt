@@ -30,3 +30,17 @@ func (i *MyImage) Bounds() image.Rectangle {
 func (i *MyImage) At(x, y int) color.Color {
   return i.value.At(x, y)
 }
+
+ERROR CHECKING
+
+WHEN CANNOT RETRIEVE IMG FILE...
+dcb random random 2x1 80x80 1x1 out12.png 111 7
+[random random 2x1 80x80 1x1 out12.png 111 7]
+getting http://placeimg.com/80/80/any
+panic: unable to decode jpeg
+
+goroutine 1 [running]:
+main.getTilePhoto(0xc0000ac060, 0x1d, 0x0, 0x0)
+        /home/jesinger/.go/src/dcb/main.go:147 +0x345
+main.main()
+        /home/jesinger/.go/src/dcb/main.go:181 +0x530
