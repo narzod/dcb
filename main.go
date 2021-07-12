@@ -89,7 +89,6 @@ func drawTileOutline(x, y, w, h, bw int, col color.Color) {
 
 func drawSpecialOutline(x, y, w, h int, pat string, col color.Color) {
 	//bw := 5
-
 	r := []rune(pat)
 	for i, c := range r {
 		//for i := 0; i <= bw-1; i++ {
@@ -120,42 +119,17 @@ func getRGBAByX11Name(name string) color.RGBA {
 	return xc.RGBA
 }
 
-func main() {
-
-	var FgColor, BgColor, CurColor, AltColor color.Color
-
-	fmt.Println(os.Args[1:])
-
-	FgColor = color.RGBA{255, 0, 0, 255}   // Red
-	BgColor = color.RGBA{255, 0, 255, 255} // Purple
-
-	FgColor = getRGBAByX11Name(os.Args[1])
-	BgColor = getRGBAByX11Name(os.Args[2])
-
-	MatrixWidth, MatrixHeight = parseAxB(os.Args[3])
-	fmt.Println(MatrixWidth, MatrixHeight)
-
-	TileWidth, TileHeight = parseAxB(os.Args[4])
-
-	// get jpeg from url and convert to png
-	// ... and use PNG in tiles
-	url := "https://picsum.photos/" + fmt.Sprintf("%d", TileWidth) + "/" + fmt.Sprintf("%d", TileHeight)
-
+func getTilePhoto(url string) image.Image {
 	fmt.Println("getting", url)
-
-	//url := "https://picsum.photos/80/80/?random"
-
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-
 	image1, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	// url := "https://i.picsum.photos/id/803/80/80.jpg?hmac=Z3s1SvDRg1QX9bC3auW_NL9rQakS6zZqlZoSIyJD0cU"
 	// imageBytes := GetJpg(url)
 	// fmt.Println(http.DetectContentType(imageBytes))
@@ -163,8 +137,35 @@ func main() {
 	if err != nil {
 		panic("unable to decode jpeg")
 	}
+	return tileimg
+}
 
-	//pngdata, _ := ToPng(fromweb)
+func main() {
+
+	var FgColor, BgColor, CurColor, AltColor color.Color
+
+	// show args
+	fmt.Println(os.Args[1:])
+
+	if os.Args[2] == "random" {
+		BgColor = x11colors.RandomSeeded().RGBA
+	} else {
+		BgColor = getRGBAByX11Name(os.Args[2])
+	}
+
+	if os.Args[1] == "random" {
+		FgColor = x11colors.RandomSeeded().RGBA
+	} else {
+		FgColor = getRGBAByX11Name(os.Args[1])
+	}
+
+	MatrixWidth, MatrixHeight = parseAxB(os.Args[3])
+	TileWidth, TileHeight = parseAxB(os.Args[4])
+
+	// get jpeg from url and decode
+	url2 := "http://www.fillmurray.com/" + fmt.Sprintf("%d", TileWidth) + "/" + fmt.Sprintf("%d", TileHeight)
+	//url := "https://picsum.photos/" + fmt.Sprintf("%d", TileWidth) + "/" + fmt.Sprintf("%d", TileHeight)
+	tileimg := getTilePhoto(url2)
 
 	for col := 0; col <= MatrixHeight-1; col++ {
 		for row := 0; row <= MatrixWidth-1; row++ {
@@ -173,7 +174,6 @@ func main() {
 				AltColor = BgColor
 				//draw.Draw(img, tileimg.Bounds(), tileimg, image.Pt(0, 0), draw.Src)
 				//drawTile(XOffset+(row*TileWidth), YOffset+(col*TileHeight), TileWidth, TileHeight, CurColor)
-
 				topLtPoint := image.Pt(XOffset+(row*TileWidth), YOffset+(col*TileHeight))
 				botRtPoint := image.Pt(XOffset+(row*TileWidth)+TileWidth, YOffset+(col*TileHeight)+TileHeight)
 				tileRect := image.Rectangle{topLtPoint, botRtPoint}
@@ -181,7 +181,7 @@ func main() {
 				draw.Draw(img, tileRect, tileimg, image.Pt(0, 0), draw.Src)
 
 			} else {
-				CurColor = x11colors.RandomSeeded().RGBA
+				CurColor = BgColor
 				AltColor = FgColor
 				drawTile(XOffset+(row*TileWidth), YOffset+(col*TileHeight), TileWidth, TileHeight, CurColor)
 			}
